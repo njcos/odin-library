@@ -4,6 +4,9 @@ const authorInput = document.querySelector(".author")
 const pagesInput = document.querySelector(".pages")
 const addButton = document.querySelector('.add-button')
 const cardsSection = document.querySelector('.cards')
+const newBook = document.querySelector('.newBook')
+const addBook = document.querySelector('.add-book')
+const close = document.querySelector('.close')
 
 
 function Book(title, author, pages) {
@@ -18,14 +21,36 @@ function addBookToLibrary(title, author, pages) {
 
 }
 
+close.addEventListener('click', () => {
+    addBook.classList.remove('open')
+})
 
+newBook.addEventListener('click', () =>{
+    addBook.classList.add('open')
 
-addButton.addEventListener('click', () => {
+})
+
+addButton.addEventListener('click', (e) => {
+    e.preventDefault()
     addBookToLibrary(titleInput.value, authorInput.value, pagesInput.value);
     createCard();
+    addBook.classList.remove('open')
     clearInputs();
     
 })
+
+document.addEventListener('click', (e) => {
+    const target = e.target.closest('.delete-book');
+
+    if(target) {
+        myLibrary.splice(parseInt(target.parentNode.id),1)
+        cardsSection.removeChild(target.parentNode)
+        console.log(myLibrary)
+
+    }
+})
+
+
 
 function clearInputs() {
     titleInput.value = '';
@@ -35,10 +60,38 @@ function clearInputs() {
 }
 
 function createCard() {
-    const newBook = document.createElement('p');
-    for(let i = 0; i < myLibrary.length; i++) {
-        newBook.textContent = `Title: ${myLibrary[i].title}, Author: ${myLibrary[i].author} Pages: ${myLibrary[i].pages}`
-        cardsSection.appendChild(newBook)
-    }
+    const card = document.createElement('div')
+    const newBookTitle = document.createElement('h2');
+    const newBookAuthor = document.createElement('h2')
+    const newBookPages = document.createElement('h2')
+    const readDiv = document.createElement('div')
+    const readTitle = document.createElement('h2')
+    const read = document.createElement('input')
+    read.type="checkbox"
+    readDiv.classList.add('read-div')
+    const deleteBook = document.createElement('button')
+    deleteBook.classList.add('delete-book')
+    deleteBook.textContent="Delete"
+   
 
+    for(let i = 0; i < myLibrary.length; i++) {
+        newBookTitle.textContent = `Title: ${myLibrary[i].title}`;
+        newBookAuthor.textContent = `Author: ${myLibrary[i].author}`; 
+        newBookPages.textContent = `Pages: ${myLibrary[i].pages}`;
+        readTitle.textContent = 'Read'
+        readDiv.appendChild(readTitle)
+        readDiv.appendChild(read)
+        card.appendChild(newBookTitle);
+        card.appendChild(newBookAuthor);
+        card.appendChild(newBookPages);
+        card.appendChild(readDiv)
+        card.appendChild(deleteBook)
+        card.classList.add("card")
+
+        card.id = i;
+        cardsSection.appendChild(card);
+
+
+    }
+    console.log(myLibrary)
 }
