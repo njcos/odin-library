@@ -9,14 +9,17 @@ const addBook = document.querySelector('.add-book')
 const close = document.querySelector('.close')
 
 
-function Book(title, author, pages) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
+class Book {
+    constructor(title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+    }
 }
 
 function addBookToLibrary(title, author, pages) {
     const book = new Book(title, author, pages);
+    console.log(book)
     myLibrary.push(book)
 
 }
